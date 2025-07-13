@@ -12,8 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const copyJsonButton = document.getElementById("copyJson");
   const toast = document.getElementById("toast");
   const toastMessage = document.getElementById("toastMessage");
+  const toggleAllPromptsButton = document.getElementById("toggleAllPrompts");
+  const toggleAllText = document.getElementById("toggleAllText");
 
   let promptCount = 1;
+  let allCollapsed = false;
 
   // Function to generate UUID
   function generateUUID() {
@@ -46,6 +49,114 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
 
+  // Function to toggle prompt collapse
+  function togglePromptCollapse(promptItem) {
+    const promptContent = promptItem.querySelector(".prompt-content");
+    const collapseIcon = promptItem.querySelector(".collapse-icon");
+
+    if (promptContent.classList.contains("collapsed")) {
+      // Expand
+      promptContent.classList.remove("collapsed");
+      promptContent.classList.add("expanded");
+      collapseIcon.classList.remove("rotated");
+    } else {
+      // Collapse
+      promptContent.classList.remove("expanded");
+      promptContent.classList.add("collapsed");
+      collapseIcon.classList.add("rotated");
+    }
+  }
+
+  // Function to update prompt preview
+  function updatePromptPreview(promptItem) {
+    const promptTextInput = promptItem.querySelector(".prompt-text-input");
+    const promptPreview = promptItem.querySelector(".prompt-preview");
+
+    if (promptTextInput && promptPreview) {
+      const text = promptTextInput.value.trim();
+      if (text) {
+        // Show first 50 characters of the prompt
+        const preview = text.length > 50 ? text.substring(0, 50) + "..." : text;
+        promptPreview.textContent = `"${preview}"`;
+      } else {
+        promptPreview.textContent = "";
+      }
+    }
+  }
+
+  // Function to setup prompt item event listeners
+  function setupPromptItem(promptItem) {
+    // Add click handler for header
+    const promptHeader = promptItem.querySelector(".prompt-header");
+    promptHeader.addEventListener("click", function (e) {
+      // Don't toggle if clicking on remove button
+      if (!e.target.closest(".remove-prompt")) {
+        togglePromptCollapse(promptItem);
+      }
+    });
+
+    // Add input listener for prompt text to update preview
+    const promptTextInput = promptItem.querySelector(".prompt-text-input");
+    if (promptTextInput) {
+      promptTextInput.addEventListener("input", function () {
+        updatePromptPreview(promptItem);
+      });
+    }
+
+    // Add remove handler
+    const removeButton = promptItem.querySelector(".remove-prompt");
+    removeButton.addEventListener("click", function (e) {
+      e.stopPropagation(); // Prevent header click event
+
+      // Don't remove if it's the only prompt
+      if (promptsContainer.querySelectorAll(".prompt-item").length > 1) {
+        promptItem.remove();
+        updatePromptNumbers();
+      } else {
+        showToast("Cannot remove the only prompt", "error");
+      }
+    });
+  }
+
+  // Initialize first prompt
+  const firstPrompt = promptsContainer.querySelector(".prompt-item");
+  if (firstPrompt) {
+    setupPromptItem(firstPrompt);
+  }
+
+  // Toggle all prompts
+  toggleAllPromptsButton.addEventListener("click", function () {
+    const promptItems = promptsContainer.querySelectorAll(".prompt-item");
+
+    allCollapsed = !allCollapsed;
+
+    promptItems.forEach((item) => {
+      const promptContent = item.querySelector(".prompt-content");
+      const collapseIcon = item.querySelector(".collapse-icon");
+
+      if (allCollapsed) {
+        promptContent.classList.remove("expanded");
+        promptContent.classList.add("collapsed");
+        collapseIcon.classList.add("rotated");
+      } else {
+        promptContent.classList.remove("collapsed");
+        promptContent.classList.add("expanded");
+        collapseIcon.classList.remove("rotated");
+      }
+    });
+
+    // Update button text and icon
+    if (allCollapsed) {
+      toggleAllText.textContent = "Expand All";
+      toggleAllPromptsButton.innerHTML =
+        '<i class="fas fa-expand-arrows-alt mr-1"></i> <span id="toggleAllText">Expand All</span>';
+    } else {
+      toggleAllText.textContent = "Collapse All";
+      toggleAllPromptsButton.innerHTML =
+        '<i class="fas fa-compress-arrows-alt mr-1"></i> <span id="toggleAllText">Collapse All</span>';
+    }
+  });
+
   // Add new prompt
   addPromptButton.addEventListener("click", function () {
     promptCount++;
@@ -53,8 +164,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const promptTemplate = promptsContainer
       .querySelector(".prompt-item")
       .cloneNode(true);
+
+    // Update prompt number
     const promptHeader = promptTemplate.querySelector("h3");
     promptHeader.textContent = `Prompt #${promptCount}`;
+
+    // Clear preview
+    const promptPreview = promptTemplate.querySelector(".prompt-preview");
+    if (promptPreview) {
+      promptPreview.textContent = "";
+    }
 
     // Update input names to have the correct index
     const inputs = promptTemplate.querySelectorAll("input, textarea, select");
@@ -72,39 +191,27 @@ document.addEventListener("DOMContentLoaded", function () {
     promptTemplate.querySelector(
       'input[name$="[response_time_seconds]"]',
     ).value = "1";
-    promptTemplate.querySelector('input[name$="[choice]"]').value = "0";
+    promptTemplate.querySelector('select[name$="[choice]"]').value = "0";
     promptTemplate.querySelector(
-      'input[name$="[level_of_correctness]"]',
+      'select[name$="[level_of_correctness]"]',
     ).value = "-1";
-    promptTemplate.querySelector('input[name$="[build_creator]"]').value =
+    promptTemplate.querySelector('select[name$="[build_creator]"]').value =
       "default";
 
-    // Add remove handler
-    const removeButton = promptTemplate.querySelector(".remove-prompt");
-    removeButton.addEventListener("click", function () {
-      promptTemplate.remove();
-      updatePromptNumbers();
-    });
+    // Ensure new prompt is expanded
+    const promptContent = promptTemplate.querySelector(".prompt-content");
+    const collapseIcon = promptTemplate.querySelector(".collapse-icon");
+    promptContent.classList.remove("collapsed");
+    promptContent.classList.add("expanded");
+    collapseIcon.classList.remove("rotated");
+
+    // Setup event listeners for the new prompt
+    setupPromptItem(promptTemplate);
 
     promptsContainer.appendChild(promptTemplate);
-  });
 
-  // Remove prompt
-  document.addEventListener("click", function (e) {
-    if (
-      e.target.classList.contains("remove-prompt") ||
-      e.target.closest(".remove-prompt")
-    ) {
-      const promptItem = e.target.closest(".prompt-item");
-
-      // Don't remove if it's the only prompt
-      if (promptsContainer.querySelectorAll(".prompt-item").length > 1) {
-        promptItem.remove();
-        updatePromptNumbers();
-      } else {
-        showToast("Cannot remove the only prompt", "error");
-      }
-    }
+    // Scroll to the new prompt
+    promptTemplate.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 
   // Update prompt numbers
@@ -184,8 +291,30 @@ document.addEventListener("DOMContentLoaded", function () {
         promptItems[i].remove();
       }
 
+      // Reset first prompt's preview
+      const firstPrompt = promptsContainer.querySelector(".prompt-item");
+      if (firstPrompt) {
+        const promptPreview = firstPrompt.querySelector(".prompt-preview");
+        if (promptPreview) {
+          promptPreview.textContent = "";
+        }
+
+        // Ensure first prompt is expanded
+        const promptContent = firstPrompt.querySelector(".prompt-content");
+        const collapseIcon = firstPrompt.querySelector(".collapse-icon");
+        promptContent.classList.remove("collapsed");
+        promptContent.classList.add("expanded");
+        collapseIcon.classList.remove("rotated");
+      }
+
       promptCount = 1;
       updatePromptNumbers();
+
+      // Reset toggle all button state
+      allCollapsed = false;
+      toggleAllPromptsButton.innerHTML =
+        '<i class="fas fa-compress-arrows-alt mr-1"></i> <span id="toggleAllText">Collapse All</span>';
+
       showToast("Form has been reset");
     }
   });
@@ -225,13 +354,13 @@ document.addEventListener("DOMContentLoaded", function () {
         usecase: item.querySelector('select[name$="[usecase]"]').value,
         issue_type: item.querySelector('select[name$="[issue_type]"]').value,
         choice:
-          parseInt(item.querySelector('input[name$="[choice]"]').value) || 0,
+          parseInt(item.querySelector('select[name$="[choice]"]').value) || 0,
         level_of_correctness:
           parseInt(
-            item.querySelector('input[name$="[level_of_correctness]"]').value,
+            item.querySelector('select[name$="[level_of_correctness]"]').value,
           ) || -1,
         build_creator:
-          item.querySelector('input[name$="[build_creator]"]').value ||
+          item.querySelector('select[name$="[build_creator]"]').value ||
           "default",
         comment: item.querySelector('textarea[name$="[comment]"]').value,
       };

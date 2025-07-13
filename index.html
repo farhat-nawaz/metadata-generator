@@ -9,6 +9,33 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <style>
+      /* Custom styles for collapse animation */
+      .prompt-content {
+        transition:
+          max-height 0.3s ease-out,
+          opacity 0.3s ease-out;
+        overflow: hidden;
+      }
+
+      .prompt-content.collapsed {
+        max-height: 0;
+        opacity: 0;
+      }
+
+      .prompt-content.expanded {
+        max-height: 2000px;
+        opacity: 1;
+      }
+
+      .collapse-icon {
+        transition: transform 0.3s ease;
+      }
+
+      .collapse-icon.rotated {
+        transform: rotate(-90deg);
+      }
+    </style>
   </head>
   <body class="bg-gray-50">
     <div class="max-w-4xl mx-auto p-6">
@@ -34,6 +61,7 @@
                   id="uuid"
                   name="uuid"
                   class="flex-1 rounded-l-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                  required
                   placeholder="Auto-generated"
                 />
                 <button
@@ -57,6 +85,7 @@
                 id="hfi_id"
                 name="hfi_id"
                 class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                required
                 placeholder="xxxx-xxx-xxx"
               />
             </div>
@@ -71,6 +100,7 @@
                 id="language"
                 name="language"
                 class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                required
               >
                 <option value="python">Python</option>
                 <option value="javascript">JavaScript</option>
@@ -88,6 +118,7 @@
                 id="interface"
                 name="interface"
                 class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                required
               >
                 <option value="pr_writer">PR Writer</option>
                 <option value="code_generator">Code Generator</option>
@@ -106,6 +137,7 @@
                 id="starting_commit__hash"
                 name="starting_commit__hash"
                 class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                required
                 placeholder="Git commit hash"
               />
             </div>
@@ -121,6 +153,7 @@
                 id="jira"
                 name="jira"
                 class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                required
                 placeholder="ANTHS-xxxx"
               />
             </div>
@@ -136,6 +169,7 @@
                 id="root_gdrive"
                 name="root_gdrive"
                 class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                required
                 placeholder="GDrive link"
               />
             </div>
@@ -159,6 +193,7 @@
                   id="repo_link"
                   name="repo_link"
                   class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                  required
                   placeholder="https://github.com/..."
                 />
               </div>
@@ -173,6 +208,7 @@
                   id="codebase_category"
                   name="codebase_category"
                   class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                  required
                 >
                   <option value="small">Small</option>
                   <option value="large">Large</option>
@@ -189,6 +225,7 @@
                   id="repo_type"
                   name="repo_type"
                   class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                  required
                 >
                   <option value="application">Application</option>
                   <option value="library">Library</option>
@@ -202,154 +239,212 @@
           <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-lg font-medium text-gray-800">Prompts</h2>
-              <button
-                type="button"
-                id="addPrompt"
-                class="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700 text-sm flex items-center"
-              >
-                <i class="fas fa-plus mr-1"></i> Add Prompt
-              </button>
+              <div class="flex space-x-2">
+                <button
+                  type="button"
+                  id="toggleAllPrompts"
+                  class="bg-gray-600 text-white px-3 py-1 rounded-md hover:bg-gray-700 text-sm flex items-center"
+                >
+                  <i class="fas fa-compress-arrows-alt mr-1"></i>
+                  <span id="toggleAllText">Collapse All</span>
+                </button>
+                <button
+                  type="button"
+                  id="addPrompt"
+                  class="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700 text-sm flex items-center"
+                >
+                  <i class="fas fa-plus mr-1"></i> Add Prompt
+                </button>
+              </div>
             </div>
 
             <div id="prompts-container">
               <!-- Prompt template - will be duplicated by JS -->
               <div
-                class="prompt-item mb-6 bg-white p-4 rounded-md border border-gray-200 shadow-sm"
+                class="prompt-item mb-6 bg-white rounded-md border border-gray-200 shadow-sm"
               >
-                <div class="flex justify-between items-center mb-3">
-                  <h3 class="text-md font-medium text-gray-700">Prompt #1</h3>
-                  <button
-                    type="button"
-                    class="remove-prompt text-red-500 hover:text-red-700"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
+                <div
+                  class="prompt-header p-4 bg-gray-50 rounded-t-md cursor-pointer hover:bg-gray-100 transition-colors duration-200"
+                >
+                  <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                      <i
+                        class="fas fa-chevron-down collapse-icon text-gray-600"
+                      ></i>
+                      <h3 class="text-md font-medium text-indigo-700">
+                        Prompt #1
+                      </h3>
+                      <span
+                        class="prompt-preview text-sm text-gray-500 italic truncate max-w-md"
+                      ></span>
+                    </div>
+                    <button
+                      type="button"
+                      class="remove-prompt text-red-500 hover:text-red-700"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div class="col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Prompt Text</label
-                    >
-                    <textarea
-                      name="prompts[0][prompt]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      rows="3"
-                      placeholder="Enter prompt text"
-                    ></textarea>
-                  </div>
-                  <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Response Time (seconds)</label
-                    >
-                    <input
-                      type="number"
-                      name="prompts[0][response_time_seconds]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      value="1"
-                    />
-                  </div>
-                  <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >PDF Link</label
-                    >
-                    <input
-                      type="text"
-                      name="prompts[0][pdf_link]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      placeholder="Link to PDF"
-                    />
-                  </div>
-                  <div class="col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Final Codebase Link</label
-                    >
-                    <input
-                      type="text"
-                      name="prompts[0][final_codebase_link]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      placeholder="Link to final codebase"
-                    />
-                  </div>
-                  <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Use Case</label
-                    >
-                    <select
-                      name="prompts[0][usecase]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                    >
-                      <option value="feature_implementation">
-                        Feature Implementation
-                      </option>
-                      <option value="bug_fix">Bug Fix</option>
-                      <option value="refactoring">Refactoring</option>
-                      <option value="optimization">Optimization</option>
-                    </select>
-                  </div>
-                  <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Issue Type</label
-                    >
-                    <select
-                      name="prompts[0][issue_type]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                    >
-                      <option value="technical_inconsistency">
-                        Technical Inconsistency
-                      </option>
-                      <option value="functional_bug">Functional Bug</option>
-                      <option value="security_vulnerability">
-                        Security Vulnerability
-                      </option>
-                      <option value="performance_issue">
-                        Performance Issue
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Choice</label
-                    >
-                    <input
-                      type="number"
-                      name="prompts[0][choice]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      value="0"
-                    />
-                  </div>
-                  <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Level of Correctness</label
-                    >
-                    <input
-                      type="number"
-                      name="prompts[0][level_of_correctness]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      value="-1"
-                    />
-                  </div>
-                  <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Build Creator</label
-                    >
-                    <input
-                      type="text"
-                      name="prompts[0][build_creator]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      value="default"
-                    />
-                  </div>
-                  <div class="col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Comment</label
-                    >
-                    <textarea
-                      name="prompts[0][comment]"
-                      class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      rows="3"
-                      required
-                      placeholder="Enter a meaningful evaluation comment"
-                    ></textarea>
+                <div class="prompt-content expanded p-4">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Prompt Text</label
+                      >
+                      <textarea
+                        name="prompts[0][prompt]"
+                        class="prompt-text-input rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                        rows="3"
+                        placeholder="Enter prompt text"
+                      ></textarea>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Response Time (seconds)</label
+                      >
+                      <input
+                        type="number"
+                        name="prompts[0][response_time_seconds]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                        value="1"
+                      />
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >PDF Link</label
+                      >
+                      <input
+                        type="text"
+                        name="prompts[0][pdf_link]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                        placeholder="Link to PDF"
+                      />
+                    </div>
+                    <div class="col-span-2">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Final Codebase Link</label
+                      >
+                      <input
+                        type="text"
+                        name="prompts[0][final_codebase_link]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                        placeholder="Link to final codebase"
+                      />
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Use Case</label
+                      >
+                      <select
+                        name="prompts[0][usecase]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="feature_implementation">
+                          Feature Implementation
+                        </option>
+                        <option value="feature_extension">
+                          Feature Extension
+                        </option>
+                        <option value="code_refactor">Code Refactor</option>
+                        <option value="optimization_testing">
+                          Optimization Testing
+                        </option>
+                        <option value="feature_reimplementation">
+                          Feature Reiplementation
+                        </option>
+                        <option value="test_coverage">Test Coverage</option>
+                        <option value="test_coverage_bootstrap">
+                          Test Coverage Bootstrap
+                        </option>
+                        <option value="debugging_fixes">Debugging Fixes</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Issue Type</label
+                      >
+                      <select
+                        name="prompts[0][issue_type]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="technical_inconsistency">
+                          Technical Inconsistency
+                        </option>
+                        <option value="tool">Tool</option>
+                        <option value="code_correctness">
+                          Code Correctness
+                        </option>
+                        <option value="setup">Setup</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Choice Rating</label
+                      >
+                      <select
+                        name="prompts[0][choice]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Level of Correctness</label
+                      >
+                      <select
+                        name="prompts[0][level_of_correctness]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="-1">Model A</option>
+                        <option value="1">Model B</option>
+                        <option value="2">Both</option>
+                        <option value="0">None</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Build Creator</label
+                      >
+                      <select
+                        name="prompts[0][build_creator]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="default">Default</option>
+                        <option value="worker">Worker</option>
+                      </select>
+                    </div>
+                    <div class="col-span-2">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Comment</label
+                      >
+                      <textarea
+                        name="prompts[0][comment]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                        rows="3"
+                        required
+                        placeholder="Enter a meaningful evaluation comment"
+                      ></textarea>
+                    </div>
                   </div>
                 </div>
               </div>
