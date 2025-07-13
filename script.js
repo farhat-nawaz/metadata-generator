@@ -321,11 +321,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to get form data as JSON
   function getFormData() {
+    const interfaces = {
+      rust: "pr_writer_clenv",
+      python: "pr_writer",
+      javascript: "pr_writer_javascript",
+    };
+
+    const language = document.getElementById("language").value;
     const formData = {
       uuid: document.getElementById("uuid").value,
       hfi_id: document.getElementById("hfi_id").value,
-      language: document.getElementById("language").value,
-      interface: document.getElementById("interface").value,
+      language: language,
+      interface: interfaces[language],
       starting_commit__hash: document.getElementById("starting_commit__hash")
         .value,
       jira: document.getElementById("jira").value,
