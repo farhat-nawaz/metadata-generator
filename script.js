@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
         build_creator:
           item.querySelector('input[name$="[build_creator]"]').value ||
           "default",
-        comment: item.querySelector('input[name$="[comment]"]').value,
+        comment: item.querySelector('textarea[name$="[comment]"]').value,
       };
 
       formData.prompts.push(promptData);
