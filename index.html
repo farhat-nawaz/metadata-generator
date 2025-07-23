@@ -137,6 +137,19 @@
                 placeholder="GDrive link"
               />
             </div>
+            <!-- Final Codebase Link -->
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Final Codebase Link</label
+              >
+              <input
+                type="text"
+                id="final_codebase_link"
+                name="final_codebase_link"
+                class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                placeholder="Link to final codebase"
+              />
+            </div>
             <!-- Language -->
             <div class="col-span-1">
               <label
@@ -340,13 +353,13 @@
                     <div class="col-span-2">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Final Codebase Link</label
+                        >Output Files Link</label
                       >
                       <input
                         type="text"
-                        name="prompts[0][final_codebase_link]"
+                        name="prompts[0][output_files_link]"
                         class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                        placeholder="Link to final codebase"
+                        placeholder="Link to files produced by models"
                       />
                     </div>
                     <div class="col-span-1">
@@ -402,12 +415,152 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Choice Rating</label
+                        >Interaction Rating</label
                       >
                       <select
                         name="prompts[0][choice]"
                         class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
                       >
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Code Logic Rating</label
+                      >
+                      <select
+                        name="prompts[0][code_logic_rating]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="-1">-1</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Naming Clarity Rating</label
+                      >
+                      <select
+                        name="prompts[0][naming_clarity_rating]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="-1">-1</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Organization Modularity Rating</label
+                      >
+                      <select
+                        name="prompts[0][organization_modularity_rating]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="-1">-1</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Interface Design Rating</label
+                      >
+                      <select
+                        name="prompts[0][interface_design_rating]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="-1">-1</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Error Handling Rating</label
+                      >
+                      <select
+                        name="prompts[0][error_handling_rating]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="-1">-1</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Documentation Rating</label
+                      >
+                      <select
+                        name="prompts[0][documentation_rating]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="-1">-1</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Review Readiness Rating</label
+                      >
+                      <select
+                        name="prompts[0][review_readiness_rating]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="-1">-1</option>
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>

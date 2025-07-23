@@ -192,6 +192,26 @@ document.addEventListener("DOMContentLoaded", function () {
       'input[name$="[response_time_seconds]"]',
     ).value = "1";
     promptTemplate.querySelector('select[name$="[choice]"]').value = "0";
+    promptTemplate.querySelector('select[name$="[code_logic_rating]"]').value =
+      "-1";
+    promptTemplate.querySelector(
+      'select[name$="[naming_clarity_rating]"]',
+    ).value = "-1";
+    promptTemplate.querySelector(
+      'select[name$="[organization_modularity_rating]"]',
+    ).value = "-1";
+    promptTemplate.querySelector(
+      'select[name$="[interface_design_rating]"]',
+    ).value = "-1";
+    promptTemplate.querySelector(
+      'select[name$="[error_handling_rating]"]',
+    ).value = "-1";
+    promptTemplate.querySelector(
+      'select[name$="[documentation_rating]"]',
+    ).value = "-1";
+    promptTemplate.querySelector(
+      'select[name$="[review_readiness_rating]"]',
+    ).value = "-1";
     promptTemplate.querySelector(
       'select[name$="[level_of_correctness]"]',
     ).value = "-1";
@@ -322,9 +342,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to get form data as JSON
   function getFormData() {
     const interfaces = {
-      rust: "pr_writer_clenv",
-      python: "pr_writer",
-      javascript: "pr_writer_javascript",
+      rust: "pr_writer_rust_v2",
+      python: "pr_writer_v2",
+      javascript: "pr_writer_javascript_v2",
     };
 
     const language = document.getElementById("language").value;
@@ -333,10 +353,11 @@ document.addEventListener("DOMContentLoaded", function () {
       hfi_id: document.getElementById("hfi_id").value,
       language: language,
       interface: interfaces[language],
-      starting_commit__hash: document.getElementById("starting_commit__hash")
+      starting_commit_hash: document.getElementById("starting_commit__hash")
         .value,
       jira: document.getElementById("jira").value,
       root_gdrive: document.getElementById("root_gdrive").value,
+      final_codebase_link: document.getElementById("final_codebase_link").value,
       repo: {
         repo_link: document.getElementById("repo_link").value,
         codebase_category: document.getElementById("codebase_category").value,
@@ -355,13 +376,50 @@ document.addEventListener("DOMContentLoaded", function () {
             item.querySelector('input[name$="[response_time_seconds]"]').value,
           ) || 1,
         pdf_link: item.querySelector('input[name$="[pdf_link]"]').value,
-        final_codebase_link: item.querySelector(
-          'input[name$="[final_codebase_link]"]',
+        output_files_link: item.querySelector(
+          'input[name$="[output_files_link]"]',
         ).value,
         usecase: item.querySelector('select[name$="[usecase]"]').value,
         issue_type: item.querySelector('select[name$="[issue_type]"]').value,
-        choice:
-          parseInt(item.querySelector('select[name$="[choice]"]').value) || 0,
+        choices: {
+          interaction_rating:
+            parseInt(item.querySelector('select[name$="[choice]"]').value) || 0,
+          code_logic:
+            parseInt(
+              item.querySelector('select[name$="[code_logic_rating]"]').value,
+            ) || -1,
+          naming_clarity:
+            parseInt(
+              item.querySelector('select[name$="[naming_clarity_rating]"]')
+                .value,
+            ) || -1,
+          organization_modularity:
+            parseInt(
+              item.querySelector(
+                'select[name$="[organization_modularity_rating]"]',
+              ).value,
+            ) || -1,
+          interface_design:
+            parseInt(
+              item.querySelector('select[name$="[interface_design_rating]"]')
+                .value,
+            ) || -1,
+          error_handling:
+            parseInt(
+              item.querySelector('select[name$="[error_handling_rating]"]')
+                .value,
+            ) || -1,
+          documentation:
+            parseInt(
+              item.querySelector('select[name$="[documentation_rating]"]')
+                .value,
+            ) || -1,
+          review_readiness:
+            parseInt(
+              item.querySelector('select[name$="[review_readiness_rating]"]')
+                .value,
+            ) || -1,
+        },
         level_of_correctness:
           parseInt(
             item.querySelector('select[name$="[level_of_correctness]"]').value,
