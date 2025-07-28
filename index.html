@@ -168,24 +168,36 @@
                 <option value="rust">Rust</option>
               </select>
             </div>
-            <!-- Interface -->
-            <!-- <div class="col-span-1"> -->
-            <!--   <label -->
-            <!--     for="interface" -->
-            <!--     class="block text-sm font-medium text-gray-700 mb-1" -->
-            <!--     >Interface</label -->
-            <!--   > -->
-            <!--   <select -->
-            <!--     id="interface" -->
-            <!--     name="interface" -->
-            <!--     class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm" -->
-            <!--     required -->
-            <!--   > -->
-            <!--     <option value="pr_writer">PR Writer</option> -->
-            <!--     <option value="code_generator">Code Generator</option> -->
-            <!--     <option value="code_reviewer">Code Reviewer</option> -->
-            <!--   </select> -->
-            <!-- </div> -->
+            <!-- Build Creator -->
+            <div class="col-span-1">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Build Creator</label
+              >
+              <select
+                id="build_creator"
+                name="build_creator"
+                class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+              >
+                <option value="default">Default</option>
+                <option value="worker">Worker</option>
+              </select>
+            </div>
+            <!-- UUID -->
+            <div class="col-span-1">
+              <label
+                for="worker ID"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Worker ID</label
+              >
+              <input
+                type="text"
+                id="worker_id"
+                name="worker_id"
+                class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                required
+                placeholder="Your turing email address"
+              />
+            </div>
           </div>
 
           <!-- Repository Section -->
@@ -324,19 +336,6 @@
                         class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
                         value="1"
                       />
-                    </div>
-                    <div class="col-span-1">
-                      <label
-                        class="block text-sm font-medium text-gray-700 mb-1"
-                        >Build Creator</label
-                      >
-                      <select
-                        name="prompts[0][build_creator]"
-                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      >
-                        <option value="default">Default</option>
-                        <option value="worker">Worker</option>
-                      </select>
                     </div>
                     <div class="col-span-2">
                       <label

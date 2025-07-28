@@ -358,6 +358,9 @@ document.addEventListener("DOMContentLoaded", function () {
       jira: document.getElementById("jira").value,
       root_gdrive: document.getElementById("root_gdrive").value,
       final_codebase_link: document.getElementById("final_codebase_link").value,
+      worker_id: document.getElementById("worker_id").value,
+      build_creator:
+        document.getElementById("build_creator").value || "default",
       repo: {
         repo_link: document.getElementById("repo_link").value,
         codebase_category: document.getElementById("codebase_category").value,
@@ -424,9 +427,6 @@ document.addEventListener("DOMContentLoaded", function () {
           parseInt(
             item.querySelector('select[name$="[level_of_correctness]"]').value,
           ) || -1,
-        build_creator:
-          item.querySelector('select[name$="[build_creator]"]').value ||
-          "default",
         comment: item.querySelector('textarea[name$="[comment]"]').value,
       };
 
