@@ -215,8 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
     promptTemplate.querySelector(
       'select[name$="[level_of_correctness]"]',
     ).value = "-1";
-    promptTemplate.querySelector('select[name$="[build_creator]"]').value =
-      "default";
 
     // Ensure new prompt is expanded
     const promptContent = promptTemplate.querySelector(".prompt-content");
