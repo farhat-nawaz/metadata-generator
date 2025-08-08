@@ -349,6 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const formData = {
       uuid: document.getElementById("uuid").value,
       hfi_id: document.getElementById("hfi_id").value,
+      task_type: document.getElementById("task_type").value,
       language: language,
       interface: interfaces[language],
       starting_commit_hash: document.getElementById("starting_commit__hash")
@@ -359,10 +360,15 @@ document.addEventListener("DOMContentLoaded", function () {
       worker_id: document.getElementById("worker_id").value,
       build_creator:
         document.getElementById("build_creator").value || "default",
+      usecase: document.getElementById("usecase").value,
       repo: {
         repo_link: document.getElementById("repo_link").value,
         codebase_category: document.getElementById("codebase_category").value,
         repo_type: document.getElementById("repo_type").value,
+      },
+      final_comment: {
+        pros: document.getElementById("final_comment_pros").value,
+        cons: document.getElementById("final_comment_cons").value,
       },
       prompts: [],
     };
@@ -380,7 +386,6 @@ document.addEventListener("DOMContentLoaded", function () {
         output_files_link: item.querySelector(
           'input[name$="[output_files_link]"]',
         ).value,
-        usecase: item.querySelector('select[name$="[usecase]"]').value,
         issue_type: item.querySelector('select[name$="[issue_type]"]').value,
         choices: {
           interaction_rating:

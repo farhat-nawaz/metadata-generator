@@ -182,7 +182,51 @@
                 <option value="worker">Worker</option>
               </select>
             </div>
-            <!-- UUID -->
+            <!-- usecase -->
+            <div class="col-span-1">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Use Case</label
+              >
+              <select
+                id="usecase"
+                name="usecase"
+                class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+              >
+                <option value="feature_implementation">
+                  Feature Implementation
+                </option>
+                <option value="feature_extension">Feature Extension</option>
+                <option value="code_refactor">Code Refactor</option>
+                <option value="optimization_testing">
+                  Optimization Testing
+                </option>
+                <option value="feature_reimplementation">
+                  Feature Reiplementation
+                </option>
+                <option value="test_coverage">Test Coverage</option>
+                <option value="test_coverage_bootstrap">
+                  Test Coverage Bootstrap
+                </option>
+                <option value="debugging_fixes">Debugging Fixes</option>
+              </select>
+            </div>
+            <!-- Task Type -->
+            <div class="col-span-1">
+              <label
+                for="task_type"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Task Type</label
+              >
+              <select
+                id="task_type"
+                name="task_type"
+                class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+              >
+                <option value="new">New</option>
+                <option value="rework">Rework</option>
+              </select>
+            </div>
+            <!-- worker ID -->
             <div class="col-span-1">
               <label
                 for="worker ID"
@@ -197,6 +241,45 @@
                 required
                 placeholder="Your turing email address"
               />
+            </div>
+          </div>
+
+          <!-- Final Comment Section -->
+          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <h2 class="text-lg font-medium text-indigo-700 mb-4">
+              Final Comment
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Pros -->
+              <div class="col-span-1">
+                <label
+                  for="final_comment_pros"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Pros</label
+                >
+                <textarea
+                  id="final_comment_pros"
+                  name="final_comment_pros"
+                  class="prompt-text-input rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white-50 p-2 w-full text-sm"
+                  rows="5"
+                  placeholder="Pros of the conversation"
+                ></textarea>
+              </div>
+              <!-- Cons -->
+              <div class="col-span-1">
+                <label
+                  for="final_comment_cons"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Cons</label
+                >
+                <textarea
+                  id="final_comment_cons"
+                  name="final_comment_cons"
+                  class="prompt-text-input rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white-50 p-2 w-full text-sm"
+                  rows="5"
+                  placeholder="Cons of the conversation"
+                ></textarea>
+              </div>
             </div>
           </div>
 
@@ -312,8 +395,8 @@
                   </div>
                 </div>
                 <div class="prompt-content expanded p-4">
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="col-span-2">
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="col-span-3">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
                         >Prompt Text</label
@@ -325,19 +408,7 @@
                         placeholder="Enter prompt text"
                       ></textarea>
                     </div>
-                    <div class="col-span-1">
-                      <label
-                        class="block text-sm font-medium text-gray-700 mb-1"
-                        >Response Time (seconds)</label
-                      >
-                      <input
-                        type="number"
-                        name="prompts[0][response_time_seconds]"
-                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                        value="1"
-                      />
-                    </div>
-                    <div class="col-span-2">
+                    <div class="col-span-3">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
                         >PDF Link</label
@@ -349,7 +420,7 @@
                         placeholder="Link to PDF"
                       />
                     </div>
-                    <div class="col-span-2">
+                    <div class="col-span-3">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
                         >Output Files Link</label
@@ -364,31 +435,14 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Use Case</label
+                        >Response Time (seconds)</label
                       >
-                      <select
-                        name="prompts[0][usecase]"
+                      <input
+                        type="number"
+                        name="prompts[0][response_time_seconds]"
                         class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      >
-                        <option value="feature_implementation">
-                          Feature Implementation
-                        </option>
-                        <option value="feature_extension">
-                          Feature Extension
-                        </option>
-                        <option value="code_refactor">Code Refactor</option>
-                        <option value="optimization_testing">
-                          Optimization Testing
-                        </option>
-                        <option value="feature_reimplementation">
-                          Feature Reiplementation
-                        </option>
-                        <option value="test_coverage">Test Coverage</option>
-                        <option value="test_coverage_bootstrap">
-                          Test Coverage Bootstrap
-                        </option>
-                        <option value="debugging_fixes">Debugging Fixes</option>
-                      </select>
+                        value="1"
+                      />
                     </div>
                     <div class="col-span-1">
                       <label
@@ -414,6 +468,21 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
+                        >Level of Correctness</label
+                      >
+                      <select
+                        name="prompts[0][level_of_correctness]"
+                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
+                      >
+                        <option value="-1">Model A</option>
+                        <option value="1">Model B</option>
+                        <option value="2">Both</option>
+                        <option value="0">None</option>
+                      </select>
+                    </div>
+                    <div class="col-span-1">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
                         >Interaction Rating</label
                       >
                       <select
@@ -433,7 +502,7 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Code Logic Rating</label
+                        >Code Logic</label
                       >
                       <select
                         name="prompts[0][code_logic_rating]"
@@ -453,7 +522,7 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Naming Clarity Rating</label
+                        >Naming Clarity</label
                       >
                       <select
                         name="prompts[0][naming_clarity_rating]"
@@ -473,7 +542,7 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Organization Modularity Rating</label
+                        >Organization Modularity</label
                       >
                       <select
                         name="prompts[0][organization_modularity_rating]"
@@ -493,7 +562,7 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Interface Design Rating</label
+                        >Interface Design</label
                       >
                       <select
                         name="prompts[0][interface_design_rating]"
@@ -513,7 +582,7 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Error Handling Rating</label
+                        >Error Handling</label
                       >
                       <select
                         name="prompts[0][error_handling_rating]"
@@ -533,7 +602,7 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Documentation Rating</label
+                        >Documentation</label
                       >
                       <select
                         name="prompts[0][documentation_rating]"
@@ -553,7 +622,7 @@
                     <div class="col-span-1">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
-                        >Review Readiness Rating</label
+                        >Review Readiness</label
                       >
                       <select
                         name="prompts[0][review_readiness_rating]"
@@ -570,22 +639,7 @@
                         <option value="7">7</option>
                       </select>
                     </div>
-                    <div class="col-span-1">
-                      <label
-                        class="block text-sm font-medium text-gray-700 mb-1"
-                        >Level of Correctness</label
-                      >
-                      <select
-                        name="prompts[0][level_of_correctness]"
-                        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-gray-50 p-2 w-full text-sm"
-                      >
-                        <option value="-1">Model A</option>
-                        <option value="1">Model B</option>
-                        <option value="2">Both</option>
-                        <option value="0">None</option>
-                      </select>
-                    </div>
-                    <div class="col-span-2">
+                    <div class="col-span-3">
                       <label
                         class="block text-sm font-medium text-gray-700 mb-1"
                         >Comment</label
